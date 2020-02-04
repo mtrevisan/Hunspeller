@@ -187,6 +187,13 @@
 			<version>${org.jfree.jfreechart.version}</version>
 		</dependency>
 
+		<!-- Markdown -->
+		<dependency>
+			<groupId>com.atlassian.commonmark</groupId>
+			<artifactId>commonmark</artifactId>
+			<version>0.14.0</version>
+		</dependency>
+
 		<!-- Morfologik -->
 		<dependency>
 			<groupId>org.carrot2</groupId>
