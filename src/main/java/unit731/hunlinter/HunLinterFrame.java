@@ -2169,8 +2169,8 @@ public class HunLinterFrame extends JFrame implements ActionListener, PropertyCh
 	private void hlpOnlineHelpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hlpOnlineHelpMenuItemActionPerformed
 		boolean error = false;
 		if(Desktop.isDesktopSupported() && DownloaderHelper.hasInternetConnectivity()){
-			final Desktop desktop = Desktop.getDesktop();
 			try{
+				final Desktop desktop = Desktop.getDesktop();
 				desktop.browse(new URI(URL_ONLINE_HELP));
 			}
 			catch(final Exception e){

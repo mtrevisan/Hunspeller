@@ -151,6 +151,9 @@
 		<!-- jFreeChart -->
 		<org.jfree.jfreechart.version>1.5.0</org.jfree.jfreechart.version>
 
+		<!-- Markdown -->
+		<com.atlassian.commonmark.version>0.14.0</com.atlassian.commonmark.version>
+
 		<!-- Morfologik -->
 		<org.carrot2.morfologik-tools.version>2.1.7</org.carrot2.morfologik-tools.version>
 
@@ -191,12 +194,12 @@
 		<dependency>
 			<groupId>com.atlassian.commonmark</groupId>
 			<artifactId>commonmark</artifactId>
-			<version>0.14.0</version>
+			<version>${com.atlassian.commonmark.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.atlassian.commonmark</groupId>
 			<artifactId>commonmark-ext-gfm-tables</artifactId>
-			<version>0.14.0</version>
+			<version>${com.atlassian.commonmark.version}</version>
 		</dependency>
 
 		<!-- Morfologik -->
