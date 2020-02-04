@@ -3,6 +3,11 @@ package unit731.hunlinter;
 import java.awt.*;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.commonmark.Extension;
+import org.commonmark.ext.gfm.tables.TablesExtension;
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 import org.xml.sax.SAXException;
 import unit731.hunlinter.gui.AscendingDescendingUnsortedTableRowSorter;
 import unit731.hunlinter.gui.AutoCorrectTableModel;
@@ -26,14 +31,17 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.NoRouteToHostException;
 import java.net.URI;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -2159,17 +2167,48 @@ public class HunLinterFrame extends JFrame implements ActionListener, PropertyCh
 	}//GEN-LAST:event_filFontMenuItemActionPerformed
 
 	private void hlpOnlineHelpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hlpOnlineHelpMenuItemActionPerformed
-		if(Desktop.isDesktopSupported()){
+		boolean error = false;
+		if(Desktop.isDesktopSupported() && DownloaderHelper.hasInternetConnectivity()){
 			final Desktop desktop = Desktop.getDesktop();
 			try{
 				desktop.browse(new URI(URL_ONLINE_HELP));
 			}
 			catch(final Exception e){
-				LOGGER.warn(Backbone.MARKER_APPLICATION, "Cannot open help page on browser: {}", e.getMessage());
+				error = true;
 			}
 		}
 		else
-			LOGGER.warn(Backbone.MARKER_APPLICATION, "Cannot open help page on browser");
+			error = true;
+
+		if(error){
+			error = false;
+
+			//render offline help
+			try{
+				final List<Extension> extensions = Arrays.asList(TablesExtension.create());
+				final Parser parser = Parser.builder()
+					.extensions(extensions)
+					.build();
+				final BufferedReader readmeReader = new BufferedReader(
+					new InputStreamReader(HunLinterFrame.class.getResourceAsStream("/README.md")));
+				final Node document = parser.parseReader(readmeReader);
+				final HtmlRenderer renderer = HtmlRenderer.builder()
+					.extensions(extensions)
+					.build();
+				final String helpContent = renderer.render(document);
+				//show HTML
+				final File file = new File("help.html");
+				file.deleteOnExit();
+				Files.write(file.toPath(), helpContent.getBytes(StandardCharsets.UTF_8));
+				Desktop.getDesktop().browse(file.toURI());
+			}
+			catch(final Exception ignored){
+				error = true;
+			}
+		}
+
+		if(error)
+			LOGGER.warn(Backbone.MARKER_APPLICATION, "Cannot open help page");
 	}//GEN-LAST:event_hlpOnlineHelpMenuItemActionPerformed
 
 	private void hlpIssueReporterMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hlpIssueReporterMenuItemActionPerformed
