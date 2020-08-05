@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.datastructures.ahocorasicktrie;
 
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -31,7 +32,6 @@ import unit731.hunlinter.services.log.ShortPrefixNotNullToStringStyle;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -94,7 +94,7 @@ public class RadixTrieNode{
 	 */
 	public void addChildrenId(final int key){
 		if(childrenIds == null)
-			childrenIds = new HashSet<>();
+			childrenIds = new THashSet<>();
 
 		childrenIds.add(key);
 	}

@@ -24,6 +24,8 @@
  */
 package unit731.hunlinter.languages;
 
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import unit731.hunlinter.datastructures.SetHelper;
@@ -36,8 +38,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -61,10 +61,10 @@ public class RulesLoader{
 	private final Map<MorphologicalTag, Set<String>> dataFields = new EnumMap<>(MorphologicalTag.class);
 	private final Set<String> unsyllabableWords;
 	private final Set<String> multipleStressedWords;
-	private final Set<String> hasToContainStress = new HashSet<>();
-	private final Set<String> cannotContainStress = new HashSet<>();
-	private final Map<String, Set<LetterMatcherEntry>> letterAndRulesNotCombinable = new HashMap<>();
-	private final Map<String, Set<RuleMatcherEntry>> ruleAndRulesNotCombinable = new HashMap<>();
+	private final Set<String> hasToContainStress = new THashSet<>();
+	private final Set<String> cannotContainStress = new THashSet<>();
+	private final Map<String, Set<LetterMatcherEntry>> letterAndRulesNotCombinable = new THashMap<>();
+	private final Map<String, Set<RuleMatcherEntry>> ruleAndRulesNotCombinable = new THashMap<>();
 
 
 	public RulesLoader(final String language, final FlagParsingStrategy strategy){
@@ -98,7 +98,7 @@ public class RulesLoader{
 			while(rules.hasNext()){
 				final String masterFlag = rules.next();
 				final String[] wrongFlags = strategy.parseFlags(rules.next());
-				ruleAndRulesNotCombinable.computeIfAbsent(masterFlag, k -> new HashSet<>(1))
+				ruleAndRulesNotCombinable.computeIfAbsent(masterFlag, k -> new THashSet<>(1))
 					.add(new RuleMatcherEntry(WORD_WITH_RULE_CANNOT_HAVE, masterFlag, wrongFlags));
 			}
 
@@ -112,7 +112,7 @@ public class RulesLoader{
 					flags = strategy.parseFlags(elem);
 					final String correctRule = flags[flags.length - 1];
 					final String[] wrongFlags = ArrayUtils.remove(flags, flags.length - 1);
-					letterAndRulesNotCombinable.computeIfAbsent(letter, k -> new HashSet<>(1))
+					letterAndRulesNotCombinable.computeIfAbsent(letter, k -> new THashSet<>(1))
 						.add(new LetterMatcherEntry((StringUtils.isNotBlank(correctRule)? WORD_WITH_LETTER_CANNOT_HAVE_USE: WORD_WITH_LETTER_CANNOT_HAVE),
 							letter, wrongFlags, correctRule));
 				}
@@ -122,7 +122,7 @@ public class RulesLoader{
 
 	private void fillDataFields(final MorphologicalTag tag, final String property){
 		final Iterator<String> itr = readPropertyAsIterator(property, ',');
-		final Set<String> set = new HashSet<>();
+		final Set<String> set = new THashSet<>();
 		while(itr.hasNext())
 			set.add(tag.getCode() + itr.next());
 		dataFields.put(tag, set);

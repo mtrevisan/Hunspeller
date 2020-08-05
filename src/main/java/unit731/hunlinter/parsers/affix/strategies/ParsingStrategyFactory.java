@@ -24,10 +24,10 @@
  */
 package unit731.hunlinter.parsers.affix.strategies;
 
+import gnu.trove.map.hash.THashMap;
 import unit731.hunlinter.workers.exceptions.LinterException;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -36,7 +36,7 @@ public class ParsingStrategyFactory{
 	private static final MessageFormat UNKNOWN_TYPE = new MessageFormat("Unknown strategy type: {0}");
 
 
-	private static final Map<String, FlagParsingStrategy> STRATEGIES = new HashMap<>(4);
+	private static final Map<String, FlagParsingStrategy> STRATEGIES = new THashMap<>(4);
 	static{
 		STRATEGIES.put(null, CharsetParsingStrategy.getASCIIInstance());
 		STRATEGIES.put("UTF-8", CharsetParsingStrategy.getUTF8Instance());

@@ -83,8 +83,8 @@ class WordMuncherTest{
 		final List<DictionaryEntry> originators = muncher.inferAffixRules(dicEntry);
 
 		Assertions.assertEquals(2, originators.size());
-		Assertions.assertEquals("a/a", originators.get(0).toString());
-		Assertions.assertEquals("a/b", originators.get(1).toString());
+		Assertions.assertEquals("a/b", originators.get(0).toString());
+		Assertions.assertEquals("a/a", originators.get(1).toString());
 	}
 
 	@Test
@@ -108,8 +108,8 @@ class WordMuncherTest{
 		final List<DictionaryEntry> originators = muncher.inferAffixRules(dicEntry);
 
 		Assertions.assertEquals(2, originators.size());
-		Assertions.assertEquals("ba/a", originators.get(0).toString());
-		Assertions.assertEquals("ab/b", originators.get(1).toString());
+		Assertions.assertEquals("ab/b", originators.get(0).toString());
+		Assertions.assertEquals("ba/a", originators.get(1).toString());
 	}
 
 	@Test

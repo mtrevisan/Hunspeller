@@ -24,12 +24,12 @@
  */
 package unit731.hunlinter.parsers.hyphenation;
 
+import gnu.trove.map.hash.THashMap;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -43,7 +43,7 @@ public class HyphenationBreak{
 			final int wordLength);
 	}
 
-	private static final Map<String, NoHyphenationManageFunction> NO_HYPHENATION_MANAGE_METHODS = new HashMap<>(4);
+	private static final Map<String, NoHyphenationManageFunction> NO_HYPHENATION_MANAGE_METHODS = new THashMap<>(4);
 	static{
 		NO_HYPHENATION_MANAGE_METHODS.put("  ", HyphenationBreak::manageInside);
 		NO_HYPHENATION_MANAGE_METHODS.put("^ ", HyphenationBreak::manageStartsWith);

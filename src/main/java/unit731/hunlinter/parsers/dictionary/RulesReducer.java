@@ -24,6 +24,8 @@
  */
 package unit731.hunlinter.parsers.dictionary;
 
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -48,8 +50,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -207,7 +207,7 @@ public class RulesReducer{
 	}
 
 	private List<LineEntry> redistributeAdditions(final List<LineEntry> plainRules){
-		final Map<String, LineEntry> map = new HashMap<>();
+		final Map<String, LineEntry> map = new THashMap<>();
 		forEach(plainRules, entry -> redistributeAddition(entry, map));
 		return SetHelper.collect(map.values(),
 			entry -> entry.removal + TAB + entry.condition + TAB + RegexHelper.mergeSet(entry.from, comparator),
@@ -283,7 +283,7 @@ public class RulesReducer{
 			final String condition = rule.condition.substring(keyLength);
 			final String removal = (conditionLength <= rule.removal.length()? condition: rule.removal);
 			final List<String> list = lcss.get(key);
-			final Set<String> addition = new HashSet<>(list.size());
+			final Set<String> addition = new THashSet<>(list.size());
 			forEach(list, add -> addition.add(add.substring(keyLength)));
 			final LineEntry newEntry = new LineEntry(removal, addition, condition, rule.from);
 			if(rules.contains(newEntry)){
@@ -311,10 +311,10 @@ public class RulesReducer{
 	}
 
 	private Map<Integer, Set<Character>> collectOverallLastGroups(List<LineEntry> plainRules){
-		final Map<Integer, Set<Character>> overallLastGroups = new HashMap<>();
+		final Map<Integer, Set<Character>> overallLastGroups = new THashMap<>();
 		if(!plainRules.isEmpty()){
 			try{
-				final Set<String> overallFrom = new HashSet<>();
+				final Set<String> overallFrom = new THashSet<>();
 				for(final LineEntry entry : plainRules)
 					forEach(entry.from, overallFrom::add);
 				//noinspection InfiniteLoopStatement
@@ -364,7 +364,7 @@ public class RulesReducer{
 			rule -> rule.condition.endsWith(condition),
 			children::add);
 
-		final Map<LineEntry, Set<Character>> groups = new HashMap<>();
+		final Map<LineEntry, Set<Character>> groups = new THashMap<>();
 		if(match(children, child -> groups.put(child, child.extractGroup(condition.length())) != null) != null)
 			throw new IllegalStateException("Duplicate key");
 
@@ -381,7 +381,7 @@ public class RulesReducer{
 			applyIf(children,
 				child -> child != parent,
 				childrenNotParent::add);
-			final Set<Character> childrenGroup = new HashSet<>();
+			final Set<Character> childrenGroup = new THashSet<>();
 			for(final LineEntry lineEntry : childrenNotParent)
 				forEach(groups.get(lineEntry), childrenGroup::add);
 
@@ -395,7 +395,7 @@ public class RulesReducer{
 			}
 
 			//extract and add new condition only if there are rules that ends with the new condition
-			final Set<Character> notPresentConditions = new HashSet<>();
+			final Set<Character> notPresentConditions = new THashSet<>();
 			final Iterator<Character> itr = groupsIntersection.iterator();
 			while(itr.hasNext()){
 				final Character chr = itr.next();
@@ -412,7 +412,7 @@ public class RulesReducer{
 
 			if(!notPresentConditions.isEmpty()){
 				final String notCondition = RegexHelper.makeNotGroup(notPresentConditions, comparator) + parent.condition;
-				final Set<Character> overallLastGroup = new HashSet<>(overallLastGroups.get(parent.condition.length()));
+				final Set<Character> overallLastGroup = new THashSet<>(overallLastGroups.get(parent.condition.length()));
 				overallLastGroup.removeAll(notPresentConditions);
 				final String yesCondition = RegexHelper.makeGroup(overallLastGroup, comparator) + parent.condition;
 				final LineEntry notRule = match(finalRules,
@@ -524,7 +524,7 @@ public class RulesReducer{
 			final Set<Character> parentGroup = parent.extractGroup(parentConditionLength);
 
 			//extract negated group
-			final Set<Character> childrenGroup = new HashSet<>(bubbles.size());
+			final Set<Character> childrenGroup = new THashSet<>(bubbles.size());
 			forEach(bubbles,
 				child -> childrenGroup.add(child.condition.charAt(child.condition.length() - parentConditionLength - 1)));
 
@@ -644,7 +644,7 @@ public class RulesReducer{
 
 		//if the bush contains a rule whose `from` is contained into this bubble, then remove the bubble
 		bubbles.removeIf(bubble -> parent.from.containsAll(bubble.from)
-			&& bubble.from.equals(new HashSet<>(parent.extractFromEndingWith(bubble.condition))));
+			&& bubble.from.equals(new THashSet<>(parent.extractFromEndingWith(bubble.condition))));
 
 		return bubbles;
 	}
@@ -672,7 +672,7 @@ public class RulesReducer{
 				final String[] commonPreCondition = LineEntry.SEQUENCER_REGEXP.subSequence(aCondition, 0, 1);
 				final String[] commonPostCondition = LineEntry.SEQUENCER_REGEXP.subSequence(aCondition, 2);
 				//extract all the rules from `similarities` that has the condition compatible with firstEntry.condition
-				final Set<Character> group = new HashSet<>(similarities.size());
+				final Set<Character> group = new THashSet<>(similarities.size());
 				forEach(similarities, entry -> group.add(RegexSequencer.splitSequence(entry.condition)[1].charAt(0)));
 				final String condition = StringUtils.join(commonPreCondition) + RegexHelper.makeGroup(group, comparator)
 					+ StringUtils.join(commonPostCondition);

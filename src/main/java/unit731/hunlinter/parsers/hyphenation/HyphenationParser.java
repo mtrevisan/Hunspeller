@@ -24,6 +24,8 @@
  */
 package unit731.hunlinter.parsers.hyphenation;
 
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.lang3.StringUtils;
 import unit731.hunlinter.datastructures.ahocorasicktrie.AhoCorasickTrie;
 import unit731.hunlinter.datastructures.ahocorasicktrie.AhoCorasickTrieBuilder;
@@ -45,8 +47,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -140,7 +140,7 @@ public class HyphenationParser{
 
 	private static final Map<Level, Set<String>> REDUCED_PATTERNS = new EnumMap<>(Level.class);
 	static{
-		forEach(Level.values(), level -> REDUCED_PATTERNS.put(level, new HashSet<>()));
+		forEach(Level.values(), level -> REDUCED_PATTERNS.put(level, new THashSet<>()));
 	}
 
 	private final Comparator<String> comparator;
@@ -159,8 +159,8 @@ public class HyphenationParser{
 		this.comparator = comparator;
 
 		for(final Level level : Level.values()){
-			rules.put(level, new HashMap<>());
-			customHyphenations.put(level, new HashMap<>());
+			rules.put(level, new THashMap<>());
+			customHyphenations.put(level, new THashMap<>());
 		}
 		options = new HyphenationOptionsParser();
 	}
@@ -174,9 +174,9 @@ public class HyphenationParser{
 
 		secondLevelPresent = patterns.containsKey(Level.COMPOUND);
 		forEach(Level.values(), level -> this.patterns.put(level, patterns.get(level)));
-		customHyphenations = Optional.ofNullable(customHyphenations).orElse(new HashMap<>(0));
+		customHyphenations = Optional.ofNullable(customHyphenations).orElse(new THashMap<>(0));
 		for(final Level level : Level.values()){
-			final Map<String, String> ch = customHyphenations.getOrDefault(level, new HashMap<>(0));
+			final Map<String, String> ch = customHyphenations.getOrDefault(level, new THashMap<>(0));
 			this.customHyphenations.put(level, ch);
 		}
 		this.options = (options != null? options: new HyphenationOptionsParser());

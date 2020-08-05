@@ -24,12 +24,12 @@
  */
 package unit731.hunlinter.parsers.hyphenation;
 
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 
@@ -53,7 +53,7 @@ public class HyphenationOptionsParser{
 
 	private final HyphenationOptions nonCompoundOptions = new HyphenationOptions(2);
 	private final HyphenationOptions compoundOptions = new HyphenationOptions(0);
-	private final Set<String> noHyphen = new HashSet<>();
+	private final Set<String> noHyphen = new THashSet<>();
 
 
 	public HyphenationOptions getNonCompoundOptions(){

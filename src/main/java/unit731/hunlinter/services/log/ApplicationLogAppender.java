@@ -27,6 +27,7 @@ package unit731.hunlinter.services.log;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
 import ch.qos.logback.core.encoder.Encoder;
+import gnu.trove.map.hash.THashMap;
 import org.slf4j.Marker;
 import unit731.hunlinter.services.system.JavaHelper;
 
@@ -34,7 +35,6 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -46,8 +46,8 @@ public class ApplicationLogAppender extends AppenderBase<ILoggingEvent>{
 
 	private Encoder<ILoggingEvent> encoder;
 
-	private static final Map<Marker, List<JTextArea>> TEXT_AREAS = new HashMap<>();
-	private static final Map<Marker, List<JLabel>> LABELS = new HashMap<>();
+	private static final Map<Marker, List<JTextArea>> TEXT_AREAS = new THashMap<>();
+	private static final Map<Marker, List<JLabel>> LABELS = new THashMap<>();
 
 
 	public static void addLabel(final JLabel label, final Marker... markers){

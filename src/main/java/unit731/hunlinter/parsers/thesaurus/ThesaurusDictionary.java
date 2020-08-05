@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.parsers.thesaurus;
 
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.lang3.StringUtils;
 import unit731.hunlinter.languages.BaseBuilder;
 import unit731.hunlinter.services.RegexHelper;
@@ -31,7 +32,6 @@ import unit731.hunlinter.services.RegexHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -72,7 +72,7 @@ public class ThesaurusDictionary{
 		forEach(partOfSpeeches, sj::add);
 		final String wholePartOfSpeeches = sj.toString();
 		final List<String> uniqueSynonyms = new ArrayList<>(synonyms.length);
-		final Set<String> uniqueValues = new HashSet<>();
+		final Set<String> uniqueValues = new THashSet<>();
 		forEach(synonyms, synonym -> {
 			final String s = synonym.toLowerCase(Locale.ROOT);
 			if(uniqueValues.add(s))

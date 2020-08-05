@@ -24,7 +24,8 @@
  */
 package unit731.hunlinter.services.system;
 
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
@@ -58,7 +59,7 @@ public class Memoizer{
 	 * @see <a href="https://opencredo.com/lambda-memoization-in-java-8/">Lambda memoization in Java 8</a>
 	 */
 	public static <T> Supplier<T> memoizeThreadAndRecursionSafe(final Supplier<T> supplier){
-		final Map<Object, T> cache = new HashMap<>();
+		final Map<Object, T> cache = new THashMap<>();
 		final ReentrantLock lock = new ReentrantLock();
 		return () -> {
 			lock.lock();
@@ -81,7 +82,7 @@ public class Memoizer{
 	 * @see <a href="https://opencredo.com/lambda-memoization-in-java-8/">Lambda memoization in Java 8</a>
 	 */
 	public static <T, U> Function<T, U> memoizeThreadAndRecursionSafe(final Function<T, U> function){
-		final Map<T, U> cache = new HashMap<>();
+		final Map<T, U> cache = new THashMap<>();
 		final ReentrantLock lock = new ReentrantLock();
 		return input -> {
 			lock.lock();

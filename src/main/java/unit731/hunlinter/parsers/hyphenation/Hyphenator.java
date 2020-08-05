@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.parsers.hyphenation;
 
+import gnu.trove.map.hash.THashMap;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -34,7 +35,6 @@ import unit731.hunlinter.services.system.LoopHelper;
 
 import java.text.Normalizer;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -147,7 +147,7 @@ public class Hyphenator implements HyphenatorInterface{
 		if(customHyphenation != null){
 			//hyphenation is custom, extract break point positions:
 			final String[] hyphenations = StringUtils.split(customHyphenation, HyphenationParser.EQUALS_SIGN);
-			final Map<Integer, Pair<Integer, String>> indexesAndRules = new HashMap<>(wordSize);
+			final Map<Integer, Pair<Integer, String>> indexesAndRules = new THashMap<>(wordSize);
 			int charCount = getNormalizedLength(hyphenations[0]);
 			for(int i = 1; i < hyphenations.length; i ++){
 				final String customRule = hyphenations[i - 1] + HyphenationParser.EQUALS_SIGN + hyphenations[i];
@@ -169,7 +169,7 @@ public class Hyphenator implements HyphenatorInterface{
 	private HyphenationBreak calculateBreakpoints(final String word, final AhoCorasickTrie<String> patterns,
 			final HyphenationOptions options){
 		final int wordSize = word.length();
-		final Map<Integer, Pair<Integer, String>> indexesAndRules = new HashMap<>(wordSize);
+		final Map<Integer, Pair<Integer, String>> indexesAndRules = new THashMap<>(wordSize);
 		if(patterns != null){
 			final String w = HyphenationParser.WORD_BOUNDARY + word.toLowerCase(Locale.ROOT) + HyphenationParser.WORD_BOUNDARY;
 			final int leftMin = options.getLeftMin();

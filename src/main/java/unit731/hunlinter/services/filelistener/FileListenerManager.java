@@ -24,6 +24,8 @@
  */
 package unit731.hunlinter.services.filelistener;
 
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import unit731.hunlinter.datastructures.SetHelper;
@@ -38,8 +40,6 @@ import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -72,7 +72,7 @@ public class FileListenerManager implements FileListener, Runnable{
 	private static final FileSystem FILE_SYSTEM_DEFAULT = FileSystems.getDefault();
 
 	private static final Map<WatchEvent.Kind<?>, BiConsumer<FileChangeListener, Path>> FILE_CHANGE_LISTENER_BY_EVENT
-		= new HashMap<>(2);
+		= new THashMap<>(2);
 	static{
 		FILE_CHANGE_LISTENER_BY_EVENT.put(StandardWatchEventKinds.ENTRY_MODIFY, FileChangeListener::fileModified);
 		FILE_CHANGE_LISTENER_BY_EVENT.put(StandardWatchEventKinds.ENTRY_DELETE, FileChangeListener::fileDeleted);
@@ -167,7 +167,7 @@ public class FileListenerManager implements FileListener, Runnable{
 			//match everything if no filter is found
 			filePatterns.add(matcherForExpression(ASTERISK));
 
-		listenerToFilePatterns.computeIfAbsent(listener, k -> new HashSet<>())
+		listenerToFilePatterns.computeIfAbsent(listener, k -> new THashSet<>())
 			.addAll(filePatterns);
 	}
 
@@ -262,7 +262,7 @@ public class FileListenerManager implements FileListener, Runnable{
 	}
 
 	private Set<FileChangeListener> matchedListeners(final Path dir, final Path file){
-		final Set<FileChangeListener> set = new HashSet<>();
+		final Set<FileChangeListener> set = new THashSet<>();
 		applyIf(getListeners(dir),
 			list -> matchesAny(file, getPatterns(list)),
 			set::add);

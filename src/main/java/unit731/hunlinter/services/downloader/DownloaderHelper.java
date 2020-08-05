@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.services.downloader;
 
+import gnu.trove.map.hash.THashMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -47,7 +48,6 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -156,7 +156,7 @@ public class DownloaderHelper{
 
 	public static Map<String, Object> getApplicationProperties(){
 		if(APPLICATION_PROPERTIES == null){
-			APPLICATION_PROPERTIES = new HashMap<>();
+			APPLICATION_PROPERTIES = new THashMap<>();
 			try(final InputStreamReader is = new InputStreamReader(HelpDialog.class.getResourceAsStream("/version.properties"), StandardCharsets.UTF_8)){
 				final Properties prop = new Properties();
 				prop.load(is);

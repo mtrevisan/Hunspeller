@@ -24,8 +24,9 @@
  */
 package unit731.hunlinter.parsers.enums;
 
+import gnu.trove.map.hash.THashMap;
+
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -53,7 +54,7 @@ public enum MorphologicalTag{
 	FLAG("fl:");
 
 
-	private static final Map<String, MorphologicalTag> VALUES = new HashMap<>();
+	private static final Map<String, MorphologicalTag> VALUES = new THashMap<>();
 	static{
 		for(final MorphologicalTag tag : EnumSet.allOf(MorphologicalTag.class))
 			VALUES.put(tag.getCode(), tag);

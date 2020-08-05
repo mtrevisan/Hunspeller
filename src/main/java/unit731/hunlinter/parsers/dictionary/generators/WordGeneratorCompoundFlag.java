@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.parsers.dictionary.generators;
 
+import gnu.trove.map.hash.THashMap;
 import org.apache.commons.lang3.ArrayUtils;
 import unit731.hunlinter.parsers.affix.AffixData;
 import unit731.hunlinter.parsers.dictionary.DictionaryParser;
@@ -34,7 +35,6 @@ import unit731.hunlinter.workers.exceptions.LinterException;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -101,7 +101,7 @@ class WordGeneratorCompoundFlag extends WordGeneratorCompound{
 	}
 
 	private List<List<Inflection[]>> generateCompounds(final List<int[]> permutations, final DictionaryEntry[] inputs){
-		final Map<Integer, Inflection[]> dicEntries = new HashMap<>();
+		final Map<Integer, Inflection[]> dicEntries = new THashMap<>();
 		final List<List<Inflection[]>> list = new ArrayList<>();
 		for(final int[] permutation : permutations){
 			final List<Inflection[]> inflections = generateCompound(permutation, dicEntries, inputs);

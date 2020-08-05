@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.parsers.dictionary.generators;
 
+import gnu.trove.map.hash.THashMap;
 import org.apache.commons.lang3.StringUtils;
 import unit731.hunlinter.parsers.affix.AffixData;
 import unit731.hunlinter.parsers.affix.strategies.FlagParsingStrategy;
@@ -34,7 +35,6 @@ import unit731.hunlinter.services.regexgenerator.HunSpellRegexWordGenerator;
 import unit731.hunlinter.workers.exceptions.LinterException;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -91,7 +91,7 @@ class WordGeneratorCompoundRules extends WordGeneratorCompound{
 		final String forbiddenWordFlag = affixData.getForbiddenWordFlag();
 
 		//extract map flag -> compounds
-		Map<String, DictionaryEntry[]> compoundRules = new HashMap<>();
+		Map<String, DictionaryEntry[]> compoundRules = new THashMap<>();
 		for(final String inputCompound : inputCompounds){
 			final DictionaryEntry dicEntry = DictionaryEntry.createFromDictionaryLine(inputCompound, affixData);
 			final Map<String, DictionaryEntry[]> distribution = dicEntry.distributeByCompoundRule(affixData);

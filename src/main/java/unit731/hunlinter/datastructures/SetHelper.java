@@ -24,14 +24,15 @@
  */
 package unit731.hunlinter.datastructures;
 
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,7 @@ public class SetHelper{
 
 	@SafeVarargs
 	public static <T> Set<T> setOf(final T... values){
-		return new HashSet<>(Arrays.asList(values));
+		return new THashSet<>(Arrays.asList(values));
 	}
 
 	@SafeVarargs
@@ -96,7 +97,7 @@ public class SetHelper{
 	 * @return	The union of {@code set1} and {@code set2}
 	 */
 	public static <T> Set<T> union(final Set<T> set1, final Set<T> set2){
-		final Set<T> union = new HashSet<>(set1);
+		final Set<T> union = new THashSet<>(set1);
 		union.addAll(set2);
 		return union;
 	}
@@ -112,7 +113,7 @@ public class SetHelper{
 	 * @return	The union of {@code sets}
 	 */
 	public static <T> Set<T> union(final Collection<Set<T>> sets){
-		final Set<T> union = new HashSet<>();
+		final Set<T> union = new THashSet<>();
 		forEach(sets, union::addAll);
 		return union;
 	}
@@ -129,7 +130,7 @@ public class SetHelper{
 	 * @return	The intersection of {@code set1} and {@code set2}
 	 */
 	public static <T> Set<T> intersection(final Set<T> set1, final Set<T> set2){
-		final Set<T> intersection = new HashSet<>(set1);
+		final Set<T> intersection = new THashSet<>(set1);
 		intersection.retainAll(set2);
 		return intersection;
 	}
@@ -146,7 +147,7 @@ public class SetHelper{
 	 */
 	public static <T> Set<T> intersection(final Collection<Set<T>> sets){
 		final Iterator<Set<T>> itr = sets.iterator();
-		final Set<T> intersection = new HashSet<>(itr.next());
+		final Set<T> intersection = new THashSet<>(itr.next());
 		while(itr.hasNext())
 			intersection.retainAll(itr.next());
 		return intersection;
@@ -189,7 +190,7 @@ public class SetHelper{
 	 * @return	The difference of {@code set1} and {@code set2}
 	 */
 	public static <T> Set<T> difference(final Set<T> set1, final Set<T> set2){
-		final Set<T> intersection = new HashSet<>(set1);
+		final Set<T> intersection = new THashSet<>(set1);
 		intersection.removeAll(set2);
 		return intersection;
 	}
@@ -231,10 +232,10 @@ public class SetHelper{
 	 * @return	The symmetric difference between {@code set1} and {@code set2}
 	 */
 	public static <T> Set<T> symmetricDifference(final Set<T> set1, final Set<T> set2){
-		final Set<T> union = new HashSet<>(set1);
+		final Set<T> union = new THashSet<>(set1);
 		union.addAll(set2);
 
-		final Set<T> intersection = new HashSet<>(set1);
+		final Set<T> intersection = new THashSet<>(set1);
 		intersection.retainAll(set2);
 
 		union.removeAll(intersection);
@@ -251,7 +252,7 @@ public class SetHelper{
 	}
 
 	public static <K, V> Map<K, List<V>> bucket(final Collection<V> entries, final Function<V, K> keyMapper){
-		final Map<K, List<V>> bucket = new HashMap<>();
+		final Map<K, List<V>> bucket = new THashMap<>();
 		for(final V entry : entries)
 			processBucketEntry(bucket, keyMapper, entry);
 		return bucket;
@@ -266,7 +267,7 @@ public class SetHelper{
 
 	public static <K, V> List<V> collect(final Collection<V> entries, final Function<V, K> keyMapper,
 		final BiConsumer<V, V> mergeFunction){
-		final Map<K, V> compaction = new HashMap<>();
+		final Map<K, V> compaction = new THashMap<>();
 		for(final V entry : entries){
 			final K key = keyMapper.apply(entry);
 			final V rule = compaction.putIfAbsent(key, entry);
@@ -278,8 +279,8 @@ public class SetHelper{
 
 	@SafeVarargs
 	public static <V> Set<V> getDuplicates(final V... list){
-		final Set<V> uniques = new HashSet<>();
-		final Set<V> duplicates = new HashSet<>();
+		final Set<V> uniques = new THashSet<>();
+		final Set<V> duplicates = new THashSet<>();
 		for(final V elem : list)
 			if(!uniques.add(elem))
 				duplicates.add(elem);

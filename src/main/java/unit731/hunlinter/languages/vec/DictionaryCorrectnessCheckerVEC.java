@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.languages.vec;
 
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.lang3.StringUtils;
 import unit731.hunlinter.languages.DictionaryCorrectnessChecker;
 import unit731.hunlinter.languages.Orthography;
@@ -41,7 +42,6 @@ import unit731.hunlinter.workers.exceptions.LinterException;
 import unit731.hunlinter.workers.exceptions.LinterWarning;
 
 import java.text.MessageFormat;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
@@ -153,7 +153,7 @@ public class DictionaryCorrectnessCheckerVEC extends DictionaryCorrectnessChecke
 	private void variantsCheck(final Inflection inflection){
 		final String derivedWord = inflection.getWord();
 		final String[] subwords = StringUtils.split(derivedWord.toLowerCase(Locale.ROOT), WORD_SEPARATORS);
-		final Set<LanguageVariant> variants = new HashSet<>();
+		final Set<LanguageVariant> variants = new THashSet<>();
 		for(final String subword : subwords){
 			if(subword.contains(GraphemeVEC.GRAPHEME_L_STROKE)){
 				if(RegexHelper.find(subword, PATTERN_NON_VANISHING_EL))

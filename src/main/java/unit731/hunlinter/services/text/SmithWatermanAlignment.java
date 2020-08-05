@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.services.text;
 
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.tuple.Pair;
@@ -31,7 +32,6 @@ import unit731.hunlinter.services.RegexHelper;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 import java.util.regex.Pattern;
@@ -138,7 +138,7 @@ public class SmithWatermanAlignment{
 				maxScore = Math.max(maxScore, scores[i][j]);
 			}
 
-		Set<Trace> traces = new HashSet<>();
+		Set<Trace> traces = new THashSet<>();
 		Stack<Pair<Integer, Integer>> maxScoreIndices = extractMaxScoreIndices(maxScore);
 		//extract edit operations
 		forEach(maxScoreIndices, score -> traces.add(traceback(score.getLeft(), score.getRight())));

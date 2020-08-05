@@ -24,6 +24,8 @@
  */
 package unit731.hunlinter.parsers.affix;
 
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import unit731.hunlinter.parsers.affix.handlers.AffixHandler;
@@ -48,8 +50,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -97,7 +97,7 @@ public class AffixParser{
 	private static final Handler OUTPUT_CONVERSION_TABLE = new ConversionTableHandler(AffixOption.OUTPUT_CONVERSION_TABLE);
 	private static final Handler RELATION_TABLE = new RelationTableHandler(AffixOption.RELATION_TABLE);
 
-	private static final Map<AffixOption, Handler> PARSING_HANDLERS = new HashMap<>();
+	private static final Map<AffixOption, Handler> PARSING_HANDLERS = new THashMap<>();
 	static{
 		//General options
 //		PARSING_HANDLERS.put("NAME", COPY_OVER);
@@ -261,7 +261,7 @@ public class AffixParser{
 
 	private void postProcessWordBreak(){
 		if(!data.containsData(AffixOption.WORD_BREAK_CHARACTERS)){
-			final Set<String> wordBreakCharacters = new HashSet<>(3);
+			final Set<String> wordBreakCharacters = new THashSet<>(3);
 			wordBreakCharacters.add(HyphenationParser.MINUS_SIGN);
 			wordBreakCharacters.add(START + HyphenationParser.MINUS_SIGN);
 			wordBreakCharacters.add(HyphenationParser.MINUS_SIGN + END);

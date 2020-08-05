@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.parsers.thesaurus;
 
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -34,7 +35,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -108,7 +108,7 @@ public class ThesaurusEntry implements Comparable<ThesaurusEntry>{
 	}
 
 	public Set<String> getSynonymsSet(){
-		final Set<String> set = new HashSet<>();
+		final Set<String> set = new THashSet<>();
 		for(final SynonymsEntry synonym : synonyms){
 			final List<String> synonymsEntrySynonyms = synonym.getSynonyms();
 			forEach(synonymsEntrySynonyms, set::add);

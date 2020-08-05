@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.parsers.thesaurus;
 
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -35,7 +36,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -76,7 +76,7 @@ public class SynonymsEntry implements Comparable<SynonymsEntry>{
 		for(int i = 0; i < partOfSpeeches.length; i ++)
 			partOfSpeeches[i] = partOfSpeeches[i].trim();
 
-		final Set<String> uniqueValues = new HashSet<>();
+		final Set<String> uniqueValues = new THashSet<>();
 		for(final String synonym : StringUtils.split(components[1], ThesaurusEntry.SYNONYMS_SEPARATOR)){
 			final String trim = synonym.trim();
 			if(StringUtils.isNotBlank(trim) && uniqueValues.add(trim))
@@ -103,7 +103,7 @@ public class SynonymsEntry implements Comparable<SynonymsEntry>{
 	}
 
 	public boolean hasSamePartOfSpeeches(final String[] partOfSpeeches){
-		return SetHelper.setOf(this.partOfSpeeches).equals(new HashSet<>(Arrays.asList(partOfSpeeches)));
+		return SetHelper.setOf(this.partOfSpeeches).equals(new THashSet<>(Arrays.asList(partOfSpeeches)));
 	}
 
 	public List<String> getSynonyms(){

@@ -24,8 +24,9 @@
  */
 package unit731.hunlinter.parsers.enums;
 
+import gnu.trove.map.hash.THashMap;
+
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -117,7 +118,7 @@ ADJECTIVE_DETERMINATIVE_DEMONSTRATIVE("adjective_demonstrative", "JDEM"),
 	UNIT_OF_MEASURE("unit_of_measure", "UOM");
 
 
-	private static final Map<String, PartOfSpeechTag> VALUES = new HashMap<>();
+	private static final Map<String, PartOfSpeechTag> VALUES = new THashMap<>();
 	static{
 		for(final PartOfSpeechTag tag : EnumSet.allOf(PartOfSpeechTag.class))
 			VALUES.put(MorphologicalTag.PART_OF_SPEECH.getCode() + tag.code, tag);

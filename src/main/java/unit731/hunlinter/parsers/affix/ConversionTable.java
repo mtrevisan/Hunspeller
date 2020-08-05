@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.parsers.affix;
 
+import gnu.trove.map.hash.THashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -34,7 +35,6 @@ import unit731.hunlinter.workers.exceptions.LinterException;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -63,7 +63,7 @@ public class ConversionTable{
 	private static final String KEY_WHOLE = reduceKey("^$");
 	private static final String ZERO = "0";
 
-	private static final Map<String, ConversionFunction> CONVERSION_TABLE_ADD_METHODS = new HashMap<>(4);
+	private static final Map<String, ConversionFunction> CONVERSION_TABLE_ADD_METHODS = new THashMap<>(4);
 	static{
 		CONVERSION_TABLE_ADD_METHODS.put(KEY_INSIDE, ConversionTable::convertInside);
 		CONVERSION_TABLE_ADD_METHODS.put(KEY_STARTS_WITH, ConversionTable::convertStartsWith);
@@ -89,7 +89,7 @@ public class ConversionTable{
 			if(numEntries <= 0)
 				throw new LinterException(BAD_NUMBER_OF_ENTRIES.format(new Object[]{context, context.getFirstParameter()}));
 
-			table = new HashMap<>(4);
+			table = new THashMap<>(4);
 			for(int i = 0; i < numEntries; i ++){
 				ParserHelper.assertNotEOF(scanner);
 

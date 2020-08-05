@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.parsers.dictionary;
 
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -43,7 +44,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -108,7 +108,7 @@ public class LineEntry implements Serializable{
 		this.addition = addition;
 		this.condition = condition;
 
-		from = (words != null? new HashSet<>(words): new HashSet<>());
+		from = (words != null? new THashSet<>(words): new THashSet<>());
 	}
 
 	public List<String> extractFromEndingWith(final String suffix){
@@ -131,7 +131,7 @@ public class LineEntry implements Serializable{
 
 	public LineEntry createReverse(){
 		final String reversedRemoval = StringUtils.reverse(removal);
-		final Set<String> reversedAddition = new HashSet<>(addition.size());
+		final Set<String> reversedAddition = new THashSet<>(addition.size());
 		forEach(addition, add -> {
 			final String[] additions = RegexHelper.split(add, SPLITTER_ADDITION);
 			additions[0] = StringUtils.reverse(additions[0]);
@@ -149,7 +149,7 @@ public class LineEntry implements Serializable{
 	}
 
 	private Set<String> extractRuleSpine(final LineEntry rule){
-		final Set<String> parentBones = new HashSet<>(rule.addition.size());
+		final Set<String> parentBones = new THashSet<>(rule.addition.size());
 		for(final String add : rule.addition){
 			final int lcsLength = StringHelper.longestCommonPrefix(Arrays.asList(add, rule.removal))
 				.length();
@@ -163,7 +163,7 @@ public class LineEntry implements Serializable{
 	}
 
 	public static Set<Character> extractGroup(final int indexFromLast, final Set<String> words){
-		final Set<Character> group = new HashSet<>(words.size());
+		final Set<Character> group = new THashSet<>(words.size());
 		for(final String word : words){
 			final int index = word.length() - indexFromLast - 1;
 			if(index < 0)

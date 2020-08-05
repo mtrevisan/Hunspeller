@@ -24,6 +24,8 @@
  */
 package unit731.hunlinter.datastructures.fsa.stemming;
 
+import gnu.trove.map.hash.THashMap;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,7 +37,6 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -80,18 +81,18 @@ public class DictionaryMetadata{
 	private final Map<DictionaryAttribute, String> attributes;
 
 	/** Replacement pairs for non-obvious candidate search in a speller dictionary */
-	private Map<String, List<String>> replacementPairs = new HashMap<>();
+	private Map<String, List<String>> replacementPairs = new THashMap<>();
 	/** Conversion pairs for input conversion, for example to replace ligatures */
-	private Map<String, String> inputConversion = new HashMap<>();
+	private Map<String, String> inputConversion = new THashMap<>();
 	/** Conversion pairs for output conversion, for example to replace ligatures */
-	private Map<String, String> outputConversion = new HashMap<>();
+	private Map<String, String> outputConversion = new THashMap<>();
 	/**
 	 * Equivalent characters (treated similarly as equivalent chars with and without
 	 * diacritics). For example, Polish <tt>ł</tt> can be specified as equivalent to <tt>l</tt>.
 	 * <p>
 	 * This implements a feature similar to hunspell MAP in the affix file.
 	 */
-	private Map<Character, List<Character>> equivalentChars = new HashMap<>();
+	private Map<Character, List<Character>> equivalentChars = new THashMap<>();
 
 	/** All "enabled" boolean attributes */
 	private final EnumMap<DictionaryAttribute, Boolean> boolAttributes = new EnumMap<>(DictionaryAttribute.class);

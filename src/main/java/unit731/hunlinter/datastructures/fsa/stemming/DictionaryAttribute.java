@@ -24,13 +24,13 @@
  */
 package unit731.hunlinter.datastructures.fsa.stemming;
 
+import gnu.trove.map.hash.THashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -188,7 +188,7 @@ public enum DictionaryAttribute{
 	INPUT_CONVERSION("fsa.dict.input-conversion"){
 		@Override
 		public Map<String, String> fromString(final String value) throws IllegalArgumentException{
-			final Map<String, String> conversionPairs = new HashMap<>();
+			final Map<String, String> conversionPairs = new THashMap<>();
 			final String[] replacements = value.split(",\\s*");
 			for(final String stringPair : replacements){
 				final String[] twoStrings = stringPair.trim().split(StringUtils.SPACE);
@@ -213,7 +213,7 @@ public enum DictionaryAttribute{
 	OUTPUT_CONVERSION("fsa.dict.output-conversion"){
 		@Override
 		public Map<String, String> fromString(final String value) throws IllegalArgumentException{
-			final Map<String, String> conversionPairs = new HashMap<>();
+			final Map<String, String> conversionPairs = new THashMap<>();
 			final String[] replacements = value.split(",\\s*");
 			for(final String stringPair : replacements){
 				final String[] twoStrings = stringPair.trim().split(StringUtils.SPACE);
@@ -238,7 +238,7 @@ public enum DictionaryAttribute{
 	REPLACEMENT_PAIRS("fsa.dict.speller.replacement-pairs"){
 		@Override
 		public Map<String, List<String>> fromString(final String value) throws IllegalArgumentException{
-			final Map<String, List<String>> replacementPairs = new HashMap<>();
+			final Map<String, List<String>> replacementPairs = new THashMap<>();
 			final String[] replacements = value.split(",\\s*");
 			for(final String stringPair : replacements){
 				final String[] twoStrings = stringPair.trim().split(StringUtils.SPACE);
@@ -266,7 +266,7 @@ public enum DictionaryAttribute{
 	EQUIVALENT_CHARS("fsa.dict.speller.equivalent-chars"){
 		@Override
 		public Map<Character, List<Character>> fromString(final String value) throws IllegalArgumentException{
-			final Map<Character, List<Character>> equivalentCharacters = new HashMap<>();
+			final Map<Character, List<Character>> equivalentCharacters = new THashMap<>();
 			final String[] eqChars = value.split(",\\s*");
 			for(final String characterPair : eqChars){
 				final String[] twoChars = characterPair.trim().split(StringUtils.SPACE);
@@ -319,7 +319,7 @@ public enum DictionaryAttribute{
 	private static final Map<String, DictionaryAttribute> attrsByPropertyName;
 
 	static{
-		attrsByPropertyName = new HashMap<>();
+		attrsByPropertyName = new THashMap<>();
 		for(final DictionaryAttribute attr : DictionaryAttribute.values())
 			if(attrsByPropertyName.put(attr.propertyName, attr) != null)
 				throw new RuntimeException("Duplicate property key for: " + attr);

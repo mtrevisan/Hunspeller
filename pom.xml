@@ -47,8 +47,8 @@
 		<apache.commons-text.version>1.9</apache.commons-text.version>
 		<apache.commons-io.version>2.7</apache.commons-io.version>
 
-		<!-- FastUtil -->
-<!--		<unimi.fastutil.version>8.3.1</fastutil.version>-->
+		<!-- Trove -->
+		<gnu.trove4j.version>3.0.3</gnu.trove4j.version>
 
 		<!-- jFreeChart -->
 		<jfree.jfreechart.version>1.5.0</jfree.jfreechart.version>
@@ -227,13 +227,13 @@
 			<version>${apache.commons-io.version}</version>
 		</dependency>
 
-		<!-- FastUtil -->
-		<!-- https://mvnrepository.com/artifact/it.unimi.dsi/fastutil -->
-<!--		<dependency>-->
-<!--			<groupId>it.unimi.dsi</groupId>-->
-<!--			<artifactId>fastutil</artifactId>-->
-<!--			<version>${unimi.fastutil.version}</version>-->
-<!--		</dependency>-->
+		<!-- Trove -->
+		<!-- https://mvnrepository.com/artifact/net.sf.trove4j/trove4j -->
+		<dependency>
+			<groupId>net.sf.trove4j</groupId>
+			<artifactId>trove4j</artifactId>
+			<version>${gnu.trove4j.version}</version>
+		</dependency>
 
 
 		<!-- jFreeChart -->

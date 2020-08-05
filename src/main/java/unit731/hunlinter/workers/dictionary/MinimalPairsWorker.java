@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.workers.dictionary;
 
+import gnu.trove.map.hash.THashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
@@ -52,7 +53,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -179,7 +179,7 @@ public class MinimalPairsWorker extends WorkerDictionary{
 	private Map<String, List<String>> extractMinimalPairs(final File outputFile){
 		final Charset charset = dicParser.getCharset();
 		int totalPairs = 0;
-		final Map<String, List<String>> minimalPairs = new HashMap<>();
+		final Map<String, List<String>> minimalPairs = new THashMap<>();
 		try(final BufferedReader sourceBR = Files.newBufferedReader(outputFile.toPath(), dicParser.getCharset())){
 			String sourceLine;
 			long readSoFarSource = 0;

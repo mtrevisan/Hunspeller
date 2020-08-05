@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.parsers.autocorrect;
 
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.lang3.tuple.Pair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -42,7 +43,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -103,7 +103,7 @@ public class AutoCorrectParser{
 	private void validate(){
 		//check for duplications
 		int index = 0;
-		final Set<String> map = new HashSet<>();
+		final Set<String> map = new THashSet<>();
 		for(final CorrectionEntry s : dictionary){
 			if(!map.add(s.getIncorrectForm()))
 				EventBusService.publish(new LinterWarning(DUPLICATED_ENTRY.format(new Object[]{s.getIncorrectForm(), s.getCorrectForm()}), IndexDataPair.of(index, null)));

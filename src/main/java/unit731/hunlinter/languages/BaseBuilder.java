@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.languages;
 
+import gnu.trove.map.hash.THashMap;
 import unit731.hunlinter.datastructures.bloomfilter.BloomFilterParameters;
 import unit731.hunlinter.languages.vec.DictionaryBaseDataVEC;
 import unit731.hunlinter.languages.vec.DictionaryCorrectnessCheckerVEC;
@@ -38,7 +39,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.function.BiFunction;
@@ -67,7 +67,7 @@ public class BaseBuilder{
 		LANGUAGE_DATA_DEFAULT.orthography = Orthography.getInstance();
 		LANGUAGE_DATA_DEFAULT.wordTokenizer = new WordTokenizer();
 	}
-	private static final Map<String, LanguageData> DATA = new HashMap<>();
+	private static final Map<String, LanguageData> DATA = new THashMap<>();
 	static{
 		LanguageData langData = new LanguageData();
 		langData.baseClass = DictionaryCorrectnessCheckerVEC.class;

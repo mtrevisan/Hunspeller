@@ -24,6 +24,8 @@
  */
 package unit731.hunlinter.parsers.affix;
 
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import unit731.hunlinter.parsers.affix.strategies.FlagParsingStrategy;
@@ -41,8 +43,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -72,9 +72,9 @@ public class AffixData{
 		AffixOption.KEEP_CASE_FLAG, AffixOption.NEED_AFFIX_FLAG/*, AffixOption.SUB_STANDARD_FLAG*/);
 
 
-	private final Map<String, Object> data = new HashMap<>();
-	private final Set<String> terminalAffixes = new HashSet<>();
-	private final Set<String> productableFlags = new HashSet<>();
+	private final Map<String, Object> data = new THashMap<>();
+	private final Set<String> terminalAffixes = new THashSet<>();
+	private final Set<String> productableFlags = new THashSet<>();
 	private boolean closed;
 
 
@@ -108,7 +108,7 @@ public class AffixData{
 	void verify(){
 		final Map<AffixOption, Object> extractSingleFlags = extractSingleFlags();
 		final Collection<Object> flaggedData = extractSingleFlags.values();
-		final Set<Object> uniqueValues = new HashSet<>(flaggedData);
+		final Set<Object> uniqueValues = new THashSet<>(flaggedData);
 		if(uniqueValues.size() != flaggedData.size())
 			throw new LinterException(REPEATED_FLAG);
 	}

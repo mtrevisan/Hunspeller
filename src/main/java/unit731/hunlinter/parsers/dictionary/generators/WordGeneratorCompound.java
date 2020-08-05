@@ -24,6 +24,8 @@
  */
 package unit731.hunlinter.parsers.dictionary.generators;
 
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -42,8 +44,6 @@ import unit731.hunlinter.workers.dictionary.DictionaryInclusionTestWorker;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -75,7 +75,7 @@ abstract class WordGeneratorCompound extends WordGeneratorBase{
 	protected final WordGenerator wordGenerator;
 
 	private DictionaryInclusionTestWorker dicInclusionTestWorker;
-	private final Set<String> compoundAsReplacement = new HashSet<>();
+	private final Set<String> compoundAsReplacement = new THashSet<>();
 
 
 	WordGeneratorCompound(final AffixData affixData, final DictionaryParser dicParser, final WordGenerator wordGenerator){
@@ -88,7 +88,7 @@ abstract class WordGeneratorCompound extends WordGeneratorBase{
 	protected List<List<Inflection[]>> generateCompounds(final List<List<String>> permutations,
 			final Map<String, DictionaryEntry[]> inputs){
 		final List<List<Inflection[]>> entries = new ArrayList<>();
-		final Map<String, Inflection[]> dicEntries = new HashMap<>();
+		final Map<String, Inflection[]> dicEntries = new THashMap<>();
 		outer:
 		for(final List<String> permutation : permutations){
 			//expand permutation
@@ -346,7 +346,7 @@ abstract class WordGeneratorCompound extends WordGeneratorBase{
 		final List<Map.Entry<String, DictionaryEntry[]>> list = new ArrayList<>(compoundRules.entrySet());
 		list.addAll(distribution.entrySet());
 
-		final Map<String, DictionaryEntry[]> map = new HashMap<>();
+		final Map<String, DictionaryEntry[]> map = new THashMap<>();
 		for(final Map.Entry<String, DictionaryEntry[]> m : list){
 			final DictionaryEntry[] entries = m.getValue();
 			DictionaryEntry[] value = new DictionaryEntry[0];

@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.workers;
 
+import gnu.trove.map.hash.THashMap;
 import org.slf4j.Logger;
 import unit731.hunlinter.gui.GUIHelper;
 import unit731.hunlinter.parsers.ParserManager;
@@ -50,7 +51,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -62,8 +62,8 @@ import java.util.function.Supplier;
 
 public class WorkerManager{
 
-	private static final Map<String, WorkerAbstract<?>> WORKERS = new HashMap<>();
-	private static final Map<String, Consumer<WorkerAbstract<?>>> ON_ENDS = new HashMap<>();
+	private static final Map<String, WorkerAbstract<?>> WORKERS = new THashMap<>();
+	private static final Map<String, Consumer<WorkerAbstract<?>>> ON_ENDS = new THashMap<>();
 
 	private final Packager packager;
 	private final ParserManager parserManager;

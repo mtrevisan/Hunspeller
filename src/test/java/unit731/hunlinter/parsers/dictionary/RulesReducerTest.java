@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.parsers.dictionary;
 
+import gnu.trove.set.hash.THashSet;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Assertions;
@@ -2122,12 +2123,12 @@ class RulesReducerTest{
 			.collect(Collectors.toList());
 		List<LineEntry> compactedRules = reducer.reduceRules(originalRules);
 
-		Set<LineEntry> expectedCompactedRules = SetHelper.setOf(
+		List<LineEntry> expectedCompactedRules = Arrays.asList(
 			new LineEntry("0", "ni", "[^n]", Arrays.asList("odamam", "adamam")),
-			new LineEntry("0", "–ni", "n", Arrays.asList("etneŧon", "etneson", "nitneson")),
-			new LineEntry("0", "i", "[^k]", Arrays.asList("odamam", "etneŧon", "etneson", "nitneson", "adamam"))
+			new LineEntry("0", "i", "[^k]", Arrays.asList("odamam", "etneŧon", "etneson", "nitneson", "adamam")),
+			new LineEntry("0", "–ni", "n", Arrays.asList("etneŧon", "etneson", "nitneson"))
 		);
-		Assertions.assertEquals(expectedCompactedRules, new HashSet<>(compactedRules));
+		Assertions.assertEquals(expectedCompactedRules, compactedRules);
 
 		List<String> rules = reducer.convertFormat(flag, false, compactedRules);
 		List<String> expectedRules = Arrays.asList(

@@ -24,6 +24,7 @@
  */
 package unit731.hunlinter.parsers.vos;
 
+import gnu.trove.map.hash.THashMap;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -40,7 +41,6 @@ import unit731.hunlinter.services.RegexHelper;
 import unit731.hunlinter.workers.exceptions.LinterException;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -220,7 +220,7 @@ public class DictionaryEntry{
 	}
 
 	public Map<String, DictionaryEntry[]> distributeByCompoundRule(final AffixData affixData){
-		final Map<String, DictionaryEntry[]> result = new HashMap<>();
+		final Map<String, DictionaryEntry[]> result = new THashMap<>();
 		final int size = (continuationFlags != null? continuationFlags.length: 0);
 		for(int i = 0; i < size; i ++){
 			final String cf = continuationFlags[i];
@@ -234,7 +234,7 @@ public class DictionaryEntry{
 
 	public Map<String, DictionaryEntry[]> distributeByCompoundBeginMiddleEnd(final String compoundBeginFlag,
 			final String compoundMiddleFlag, final String compoundEndFlag){
-		final Map<String, DictionaryEntry[]> distribution = new HashMap<>(3);
+		final Map<String, DictionaryEntry[]> distribution = new THashMap<>(3);
 		distribution.put(compoundBeginFlag, new DictionaryEntry[0]);
 		distribution.put(compoundMiddleFlag, new DictionaryEntry[0]);
 		distribution.put(compoundEndFlag, new DictionaryEntry[0]);
