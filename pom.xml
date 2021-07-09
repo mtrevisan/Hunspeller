@@ -57,6 +57,7 @@
 		<maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
 		<maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
+		<graalvm.version>21.1.0</graalvm.version>
 
 		<!-- Apache -->
 		<apache.commons-text.version>1.9</apache.commons-text.version>
@@ -162,6 +163,11 @@
 		</profile>
 	</profiles>
 
+	<!-- https://medium.com/graalvm/simplifying-native-image-generation-with-maven-plugin-and-embeddable-configuration-d5b283b92f57 -->
+	<!-- https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-21.1.0 -->
+	<!-- https://docs.oracle.com/en/graalvm/enterprise/20/docs/reference-manual/enterprise-native-image/ -->
+	<!-- https://www.graalvm.org/reference-manual/native-image/#install-native-image -->
+	<!-- https://www.graalvm.org/reference-manual/native-image/NativeImageMavenPlugin/ -->
 	<build>
 		<plugins>
 			<!-- Compiler -->
@@ -194,56 +200,80 @@
 			</plugin>
 			<!-- Shade -->
 			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-shade-plugin -->
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-shade-plugin</artifactId>-->
+<!--				<version>${maven-shade-plugin.version}</version>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						&lt;!&ndash; Run shade goal on package phase &ndash;&gt;-->
+<!--						<phase>package</phase>-->
+<!--						<goals>-->
+<!--							<goal>shade</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<minimizeJar>true</minimizeJar>-->
+<!--							<shadedArtifactAttached>true</shadedArtifactAttached>-->
+<!--							<shadedClassifierName>shaded</shadedClassifierName>-->
+<!--							<filters>-->
+<!--								&lt;!&ndash; FIXME: strengthen the inclusions &ndash;&gt;-->
+<!--								&lt;!&ndash; ClassNotFoundException: ch.qos.logback.classic.boolex.OnMarkerEvaluator&ndash;&gt;-->
+<!--								<filter>-->
+<!--									<artifact>ch.qos.logback:logback-classic</artifact>-->
+<!--									<includes>-->
+<!--										<include>**</include>-->
+<!--									</includes>-->
+<!--								</filter>-->
+<!--								<filter>-->
+<!--									<artifact>*:*</artifact>-->
+<!--									<excludes>-->
+<!--										<exclude>LICENSE.txt</exclude>-->
+<!--										<exclude>META-INF/LICENSE</exclude>-->
+<!--										<exclude>META-INF/LICENSE.txt</exclude>-->
+<!--										<exclude>META-INF/NOTICE</exclude>-->
+<!--										<exclude>META-INF/NOTICE.txt</exclude>-->
+<!--									</excludes>-->
+<!--								</filter>-->
+<!--							</filters>-->
+<!--							<transformers>-->
+<!--								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+<!--									<mainClass>${main.class}</mainClass>-->
+<!--									<manifestEntries>-->
+<!--										<X-Compile-Source-JDK>${maven.compiler.source}</X-Compile-Source-JDK>-->
+<!--										<X-Compile-Target-JDK>${maven.compiler.target}</X-Compile-Target-JDK>-->
+<!--										<Built-By>Mauro Trevisan</Built-By>-->
+<!--										<Build-Jdk>${java.version} (${java.vendor} ${java.vm.version})</Build-Jdk>-->
+<!--										<Build-OS>${os.name} ${os.arch} ${os.version}</Build-OS>-->
+<!--									</manifestEntries>-->
+<!--								</transformer>-->
+<!--							</transformers>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
+
+			<!-- GraalVM -->
+			<!-- https://mvnrepository.com/artifact/org.graalvm.nativeimage/native-image-maven-plugin -->
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>${maven-shade-plugin.version}</version>
+				<groupId>org.graalvm.nativeimage</groupId>
+				<artifactId>native-image-maven-plugin</artifactId>
+				<version>${graalvm.version}</version>
 				<executions>
 					<execution>
-						<!-- Run shade goal on package phase -->
-						<phase>package</phase>
 						<goals>
-							<goal>shade</goal>
+							<goal>native-image</goal>
 						</goals>
-						<configuration>
-							<minimizeJar>true</minimizeJar>
-							<shadedArtifactAttached>true</shadedArtifactAttached>
-							<shadedClassifierName>shaded</shadedClassifierName>
-							<filters>
-								<!-- FIXME: strengthen the inclusions -->
-								<!-- ClassNotFoundException: ch.qos.logback.classic.boolex.OnMarkerEvaluator-->
-								<filter>
-									<artifact>ch.qos.logback:logback-classic</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-								<filter>
-									<artifact>*:*</artifact>
-									<excludes>
-										<exclude>LICENSE.txt</exclude>
-										<exclude>META-INF/LICENSE</exclude>
-										<exclude>META-INF/LICENSE.txt</exclude>
-										<exclude>META-INF/NOTICE</exclude>
-										<exclude>META-INF/NOTICE.txt</exclude>
-									</excludes>
-								</filter>
-							</filters>
-							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>${main.class}</mainClass>
-									<manifestEntries>
-										<X-Compile-Source-JDK>${maven.compiler.source}</X-Compile-Source-JDK>
-										<X-Compile-Target-JDK>${maven.compiler.target}</X-Compile-Target-JDK>
-										<Built-By>Mauro Trevisan</Built-By>
-										<Build-Jdk>${java.version} (${java.vendor} ${java.vm.version})</Build-Jdk>
-										<Build-OS>${os.name} ${os.arch} ${os.version}</Build-OS>
-									</manifestEntries>
-								</transformer>
-							</transformers>
-						</configuration>
+						<phase>package</phase>
 					</execution>
 				</executions>
+				<configuration>
+					<skip>false</skip>
+					<imageName>${project.artifactId}</imageName>
+					<mainClass>${main.class}</mainClass>
+					<buildArgs>
+						--no-fallback
+					</buildArgs>
+				</configuration>
 			</plugin>
 		</plugins>
 
@@ -342,6 +372,15 @@
 			<artifactId>junit-jupiter-engine</artifactId>
 			<version>${junit.junit-jupiter-engine.version}</version>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- GraalVM -->
+		<!-- https://mvnrepository.com/artifact/org.graalvm.sdk/graal-sdk -->
+		<dependency>
+			<groupId>org.graalvm.sdk</groupId>
+			<artifactId>graal-sdk</artifactId>
+			<version>${graalvm.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
